@@ -1,0 +1,27 @@
+version: '3'
+services:
+        db:
+                container_name: djangodb
+                image: mysql:5.7
+                restart: always
+                volumes:
+                        - .:/djangodb
+                environment:
+                        - MYSQL_ROOT_PASSWORD=1234
+                        - MYSQL_DATABASE=djangodb
+                        - MYSQL_USER=user
+                        - MYSQL_PASSWORD=1234
+                ports:
+                        - "3306:3306"
+        web:
+                container_name: django-web
+                build: ./django-mysite
+                image: naa02/djangoapp
+                command: python3 manage.py runserver 0.0.0.0:8000
+                volumes:
+                        - .:/djangoweb
+                ports:
+                        - "8000:8000"
+                links:
+                        - db:djangodb
+                           
